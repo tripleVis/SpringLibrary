@@ -1,5 +1,6 @@
 package com.example.SpringLibrary.dao;
 
+import com.example.SpringLibrary.models.Book;
 import com.example.SpringLibrary.models.Person;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -20,28 +21,43 @@ public class PersonDAO {
     }
 
     @Transactional(readOnly = true)
-    public List<Person> index() {
+    public List<Person> getPeople() {
         Session session = sessionFactory.getCurrentSession();
 
-        List<Person> people = session.createQuery("select p from Person p", Person.class)
+        return session.createQuery("from Person", Person.class)
                 .getResultList();
-
-        return people;
     }
 
-    public Person show(int id) {
-        return null;
+    @Transactional
+    public Person getPerson(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Person.class, id);
     }
 
-    public void save(Person person) {
-
+    @Transactional
+    public void savePerson(Person person) {
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(person);
     }
 
-    public void update(int id, Person updatedPerson) {
+    @Transactional
+    public void updatePerson(int id, Person updatedPerson) {
+        Session session = sessionFactory.getCurrentSession();
 
+        Person personToBeUpdated = session.get(Person.class, id);
+        personToBeUpdated.setFIO(updatedPerson.getFIO());
+        personToBeUpdated.setBirthYear(updatedPerson.getBirthYear());
     }
 
-    public void delete(int id) {
+    @Transactional
+    public void deletePerson(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        session.remove(session.get(Person.class, id));
+    }
 
+    @Transactional
+    public List<Book> getPersonBooks(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("from Book b where b.ownerID=:id", Book.class).setParameter("id", id).getResultList();
     }
 }

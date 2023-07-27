@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org" >
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Books</title>
+    <title>People</title>
 </head>
 <body>
-<div th:each="person:${people}" >
-    <a th:href="@{/people/{id}(id=${person.getID()})}"
-        th:text="${person.getFIO()+', '+person.getBirthYear()}"
-    >user</a>
-</div>
+<ul th:each="person:${people}">
+    <li><a th:href="@{/people/{id}(id=${person.getID()})}"
+           th:text="${person.getFIO()+', '+person.getBirthYear()}">user
+    </a></li>
+</ul>
 
 </body>
 </html>

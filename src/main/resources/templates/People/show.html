@@ -7,7 +7,20 @@
 <body>
 <p th:text="${person.getFIO() + ', ' + person.getBirthYear()}">VALUE</p>
 
-<a th:href="@{/people/{id}/edit(id=${person.getID()})}">Edit</a>
+<div th:if="${books.isEmpty()}">
+    <p>Человек не взял еще ни одной книги</p>
+    <hr/>
+</div>
+
+<div th:if="${!books.isEmpty()}">
+    <p>Книги:</p>
+    <table th:each="book:${books}">
+        <tr th:text="${book.getTitle()+','+book.getAuthor()+', '+book.getYear()}">book</tr>
+    </table>
+    <hr/>
+</div>
+
+<a th:href="@{/people/{id}/edit(id=${person.getID()})}">Edit</a></br>
 
 <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getID()})}">
     <input type="submit" value="Delete"/>
