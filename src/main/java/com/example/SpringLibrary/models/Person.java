@@ -1,6 +1,10 @@
 package com.example.SpringLibrary.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
@@ -16,9 +20,13 @@ public class Person {
     private int ID;
 
     @Column(name = "FIO")
+    @NotBlank
+    @Length(min = 10, max = 50, message = "ФИО не может быть менее 10 или более 50 символов")
     private String FIO;
 
     @Column(name = "birth_date")
+    @Min(value = 1965, message = "Год рождения не может быть меньше 1965")
+    @Max(value = 2013, message = "Год рождения не может быть больше 2013")
     private int birthYear;
 
     public Person() {
@@ -32,6 +40,10 @@ public class Person {
 
     public int getID() {
         return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public String getFIO() {
@@ -56,9 +68,5 @@ public class Person {
 
     public void setBooks(List<Book> books) {
         this.books = books;
-    }
-
-    public void setID(int ID) {
-        this.ID = ID;
     }
 }

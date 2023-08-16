@@ -11,6 +11,8 @@
            th:text="${book.getTitle()+', '+book.getAuthor()+', '
        +book.getYear()}">book</a></li>
 </ul>
+<hr/>
 
+<a th:href="@{books/new}">Добавить книгу</a>
 </body>
 </html>

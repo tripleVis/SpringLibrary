@@ -1,39 +1,43 @@
 package com.example.SpringLibrary.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.Length;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "Book")
 public class Book {
 
-    public Person getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Person owner) {
-        this.owner = owner;
-    }
-
     @ManyToOne
-    @JoinColumn(name = "person_id",referencedColumnName = "ID",insertable = false,updatable = false)
+    @JoinColumn(name = "person_id", referencedColumnName = "ID")
     private Person owner;
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int ID;
 
     @Column(name = "title")
+    @Length(min = 1, max = 35, message = "Введите название книги")
     String title;
-
     @Column(name = "author")
+    @NotBlank(message = "Введите автора книги")
     String author;
 
     @Column(name = "year")
+    @Min(value = 1900, message = "Год не может быть менее 1900")
+    @Max(2023)
     int year;
 
-    @Column(name = "person_id")
-    Integer ownerID;
+    @Column(name = "taken_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date takenAt;
+
+    @Transient
+    private boolean expired;
 
     public Book() {
 
@@ -41,6 +45,10 @@ public class Book {
 
     public int getID() {
         return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public String getTitle() {
@@ -67,12 +75,12 @@ public class Book {
         this.year = year;
     }
 
-    public Integer getOwnerID() {
-        return ownerID;
+    public Person getOwner() {
+        return owner;
     }
 
-    public void setOwnerID(int personID) {
-        this.ownerID = personID;
+    public void setOwner(Person owner) {
+        this.owner = owner;
     }
 
     public Book(String title, String author, int year) {
@@ -81,5 +89,20 @@ public class Book {
         this.year = year;
     }
 
+    public Date getTakenAt() {
+        return takenAt;
+    }
+
+    public void setTakenAt(Date takenAt) {
+        this.takenAt = takenAt;
+    }
+
+    public void setExpired(boolean expired) {
+        this.expired = expired;
+    }
+
+    public boolean isExpired() {
+        return expired;
+    }
 }
 
